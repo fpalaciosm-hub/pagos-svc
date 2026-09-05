@@ -1,62 +1,27 @@
-# Pagos — Microservicio de riesgo pagos
+# Microservicio de Pagos - Ingeniería DevOps
 
-Microservicio correspondiente al **caso casoEjemplo — TicketWave** (Venta y control de acceso de entradas para eventos en vivo) de la Evaluación Parcial N°1.
+## 1. Modelo de Ramificación Elegido
+Hemos seleccionado el modelo **GitFlow**. Esta decisión se justifica porque nuestro proyecto cuenta con ciclos de entrega muy claros y estructurados  (EP01, EP02, EP03). 
 
-| | |
-|---|---|
-| Stack | Spring Boot 3.3 · Java 21 · Maven · Spring Data JPA · H2 · springdoc-openapi |
-| Calidad | JaCoCo cobertura LINE 100% · Cucumber (BDD) alineado a endpoints REST |
-| Entrega | Docker / Docker Compose |
+GitFlow nos permite trabajar de manera ordenada separando estrictamente el código en desarrollo activo (`develop`) del código de producción estable (`main`). De esta forma, evitamos subir código incompleto a la rama principal y garantizamos la trazabilidad total mediante ramas temporales de características (`feature/`) y reparaciones de emergencia (`hotfix/`).
 
-## Responsabilidad (SRP)
+## 2. Convención de Mensajes de Commit
+Adoptamos el estándar de commits semánticos bajo la estructura: `tipo(alcance): descripcion`.
+* **feat**: Nueva funcionalidad (Ej: `feat(ui): agregar pie de pagina`)
+* **fix**: Solución de un error de software (Ej: `fix(home): corregir titulo`)
+* **docs**: Modificaciones en documentación (Ej: `docs: agregar changelog`)
+* **chore**: Labores de mantenimiento o archivos CI/CD (Ej: `chore(ci): agregar workflow`)
 
-administra los datos y la lógica del dominio de Pagos del caso casoEjemplo (TicketWave). Su base de datos es una **H2 en memoria** (un solo microservicio por base), cumpliendo aislamiento de datos por dominio.
+*Regla:* Todo el texto se escribe rigurosamente en minúsculas y omitiendo tildes para prevenir problemas de codificación.
 
-## Página de presentación
+## 3. Estructura de Ramas y Reglas de Naming
+* **main**: Código productivo y completamente estable. No recibe código directo.
+* **develop**: Rama integradora del proyecto escolar.
+* **feature/<descripcion-corta>**: Ramas de desarrollo técnico individuales (Ej: `feature/pagina-presentacion`).
+* **hotfix/<descripcion-corta>**: Corrección veloz ante fallas críticas detectadas en producción (Ej: `hotfix/titulo-pagina`).
 
-Al ejecutar el servicio, `http://localhost:8080/` muestra la página de presentación del microservicio con documentación y enlaces a:
-
-- **Swagger UI**: `/swagger-ui/index.html`
-- **OpenAPI (yaml)**: `/v3/api-docs.yaml`
-- **ReDoc**: `/redoc.html`
-- **H2 Console**: `/h2-console`
-
-## Endpoints
-
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/pagos` | Lista todos los recursos |
-| GET | `/api/pagos/{id}` | Obtiene un recurso por id |
-| POST | `/api/pagos` | Crea un recurso |
-| PUT | `/api/pagos/{id}` | Actualiza un recurso |
-| DELETE | `/api/pagos/{id}` | Elimina un recurso |
-
-## Documentación del proyecto
-
-La documentación completa está en la carpeta [`docs/`](docs/):
-
-- [`docs/00_Resumen.md`](docs/00_Resumen.md) — propósito, responsabilidad y tecnologías
-- [`docs/01_Arquitectura.md`](docs/01_Arquitectura.md) — componentes, arquitectura y patrones
-- [`docs/02_API.md`](docs/02_API.md) — contrato REST y ejemplos curl
-- [`docs/03_Pruebas.md`](docs/03_Pruebas.md) — tests unitarios, cobertura y Cucumber
-- [`docs/04_Despliegue.md`](docs/04_Despliegue.md) — Docker, Docker Compose e integración
-
-## Cómo ejecutar locmente
-
-```bash
-mvn spring-boot:run
-```
-
-## Cómo ejecutar con Docker
-
-```bash
-docker compose up --build
-# http://localhost:8080
-```
-
-## Cómo ejecutar las pruebas
-
-```bash
-mvn test      # unit tests + Cucumber
-mvn verify    # + verificación de cobertura JaCoCo (100% LINE, falla si baja)
-```
+## 4. Política de Fusión y Estrategia de Revisión
+* Está prohibido hacer pushes directos sobre las ramas `main` y `develop`.
+* Todo código nuevo entra exclusivamente mediante un Pull Request (PR).
+* Se exige obligatoriamente la validación y aprobación de al menos 1 integrante antes de completar cualquier fusión.
+* Tras concretar el proceso de unión, las ramas temporales utilizadas deben ser eliminadas de forma inmediata.
